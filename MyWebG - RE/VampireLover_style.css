@@ -1,0 +1,73 @@
+/* 遊戲容器：16:9比例，居中 */
+body, html {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    background: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#gameContainer {
+    position: relative;
+    width: 90vw;
+    max-width: 1280px;
+    aspect-ratio: 16/9;
+    overflow: hidden;
+    background: black;
+}
+
+/* 背景圖層 */
+#bgLayer {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+}
+
+/* 角色圖層 */
+#charaLayer img {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    max-height: 80%;
+    z-index: 1; /* 確保角色在黑框和文字下方 */
+}
+
+/* 黑框文字框 */
+#textBox {
+    position: absolute;
+    bottom: 5%;
+    width: 90%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.6);
+    color: white;
+    font-size: 1.2rem;
+    padding: 20px;
+    border-radius: 10px;
+    z-index: 2;
+}
+
+/* 選單按鈕 */
+#menu {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    z-index: 5;
+}
+
+#menu button {
+    margin: 10px;
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    cursor: pointer;
+}
