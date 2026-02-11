@@ -1,0 +1,71 @@
+::intro
+
+[blackBG black in]
+
+變異吸血鬼—拉斐爾．加西亞，原生於法國。
+
+正值路易十五親政前夕，攝政時期的奢靡與社會動盪剛好促成了拉斐爾的逃離。
+
+化名奧斯卡．德朗格從法國遷至荷蘭並潛在人類社會中。
+
+[wait 2000]
+[endIntro]
+[blackBG black out]
+[jump start]
+
+
+
+::start
+
+[bg city_evening.jpg fade in]
+[overlay show]
+
+世界上第一間跨國公司—荷蘭東印度公司
+
+全球貿易的霸主，擁有自己的軍隊、錢幣與條約簽署權。
+
+他們注意到了拉斐爾的外貌和聲音魅力，於是聘請他做為公司的外交官。
+
+今日，拉斐爾與其同僚們正在前往長崎出島的海上 ···
+
+[overlay out]
+[jump scene_1]
+
+
+
+::scene_1
+
+[bg city_evening.jpg fade in]
+
+[name 眼罩]
+
+「奧斯卡閣下，海風涼了。看著這片極東之海，這應是你首次踏足這片『神國』的貿易領地吧？」
+
+[chara-center Raph normal fade in]
+
+[name 拉斐爾(奧斯卡)]
+
+「誠如您所言，伯格前輩。這片土地對我而言，確實充滿了未知的……沉靜。」
+
+[chara-center Raph normal fade out]
+
+[bg city_evening.jpg fade out]
+
+[name]
+
+凡·登·伯格，這位與我同行的領路人。
+他的人生信條如鐵律般嚴苛，腹中藏著足以裝滿整座亞維儂圖書館的學識。
+雖在某次險惡的交涉中因染疾而失明一目，但他眼中燃燒的野心，卻從未因那道疤痕而熄滅半點。
+
+[name 拉斐爾(奧斯卡)]
+
+（呵……比起那些因恐懼變革而蜷縮於陰影中的庸才，這份對命運的韌性，倒也值得我這副永恆卻乾枯的靈魂給予幾分敬意。）
+
+[name]
+
+······
+
+[jump scene_2]
+
+::scene_2
+[bg city_evening.jpg fade in]
