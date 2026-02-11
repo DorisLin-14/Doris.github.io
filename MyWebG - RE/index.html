@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vampire Lover</title>
+
+  <link rel="stylesheet" href="VampireLover_style.css" />
+</head>
+
+<body>
+
+<div id="game-wrapper">
+
+  <div id="game">
+
+    <!-- ===== 背景 ===== -->
+    <img id="bg" />
+
+    <!-- ===== 角色層(動態插入) ===== -->
+    <div id="charaLayer"></div>
+
+    <!-- ===== 中央旁白 ===== -->
+    <div id="middleBox" class="textbox middle hidden"></div>
+
+    <!-- ===== 對話框 ===== -->
+    <div id="dialogueBox" class="textbox bottom hidden">
+      <div id="name"></div>
+      <div id="text"></div>
+    </div>
+
+    <!-- ===== 選項 ===== -->
+    <div id="choiceLayer"></div>
+
+    <!-- ===== 主選單 ===== -->
+    <div id="menu" class="menu">
+      <h1 class="title">Vampire Lover</h1>
+
+      <button id="newGame">新月</button>
+      <button id="loadGame">弦月</button>
+      <button id="autoBtn">Auto</button>
+      <button id="saveBtn">Save</button>
+    </div>
+
+  </div>
+</div>
+
+
+<script src="config.js"></script>
+<script src="VampireLover_engine.js"></script>
+
+</body>
+</html>

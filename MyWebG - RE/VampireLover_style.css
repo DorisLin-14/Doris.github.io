@@ -1,0 +1,188 @@
+/* =======================
+   基本重置
+======================= */
+
+*{
+  box-sizing:border-box;
+}
+
+body{
+  margin:0;
+  background:#000;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+  font-family:"Noto Sans TC",sans-serif;
+  overflow:hidden;
+  color:white;
+}
+
+
+/* =======================
+   16:9 主畫面
+======================= */
+
+#game-wrapper{
+  aspect-ratio:16/9;
+  width:100%;
+  max-width:1400px;
+  position:relative;
+}
+
+#game{
+  width:100%;
+  height:100%;
+  position:relative;
+  overflow:hidden;
+  background:black;
+}
+
+
+/* =======================
+   背景
+======================= */
+
+#bg{
+  position:absolute;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  z-index:1;
+  transition:opacity .6s;
+}
+
+
+/* =======================
+   角色層
+======================= */
+
+#charaLayer img{
+  position:absolute;
+  bottom:0;
+  width:40%;
+  z-index:2;
+  transition:opacity .4s, transform .4s;
+}
+
+
+/* =======================
+   文字框共用
+======================= */
+
+.textbox{
+  background:rgba(0,0,0,.75);
+  backdrop-filter: blur(8px);
+  padding:28px;
+  border-radius:14px;
+  line-height:1.7;
+  font-size:20px;
+  z-index:4;
+}
+
+
+/* 中央框 */
+
+.middle{
+  position:absolute;
+  top:40%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  width:60%;
+  text-align:center;
+}
+
+
+/* 下方對話框 */
+
+.bottom{
+  position:absolute;
+  bottom:0;
+  width:100%;
+}
+
+
+/* 名字 */
+
+#name{
+  font-weight:bold;
+  font-size:18px;
+  margin-bottom:10px;
+  opacity:.9;
+}
+
+
+/* 隱藏 */
+
+.hidden{
+  display:none;
+}
+
+
+/* =======================
+   選項UI
+======================= */
+
+#choiceLayer{
+  position:absolute;
+  bottom:30%;
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:14px;
+  z-index:5;
+}
+
+#choiceLayer button{
+  padding:14px 30px;
+  font-size:18px;
+  background:rgba(0,0,0,.8);
+  border:1px solid white;
+  color:white;
+  cursor:pointer;
+  transition:.2s;
+}
+
+#choiceLayer button:hover{
+  background:white;
+  color:black;
+}
+
+
+/* =======================
+   主選單
+======================= */
+
+.menu{
+  position:absolute;
+  inset:0;
+  background:black;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  gap:20px;
+  z-index:10;
+}
+
+.title{
+  font-size:48px;
+  margin-bottom:20px;
+}
+
+.menu button{
+  width:220px;
+  padding:14px;
+  font-size:20px;
+  background:transparent;
+  border:2px solid white;
+  color:white;
+  cursor:pointer;
+  transition:.2s;
+}
+
+.menu button:hover{
+  background:white;
+  color:black;
+}
