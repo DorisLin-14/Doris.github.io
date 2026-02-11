@@ -1,0 +1,95 @@
+body, html {
+    margin: 0;
+    height: 100%;
+    background: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Noto Sans TC", sans-serif;
+}
+
+/* 16:9 容器 */
+#gameContainer {
+    position: relative;
+    width: 95vw;
+    max-width: 1280px;
+    aspect-ratio: 16/9;
+    overflow: hidden;
+    background: black;
+}
+
+/* 背景 */
+#bgLayer {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+}
+
+/* 角色 */
+#charaLayer img {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    max-height: 85%;
+    z-index: 1;
+}
+
+/* ===== 中間旁白框 ===== */
+#narrationBox {
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    background: rgba(0,0,0,0.65);
+    color: white;
+    padding: 25px 35px;
+    border-radius: 12px;
+    font-size: 0.95rem;      /* 字變小 */
+    line-height: 1.9;        /* 行距放寬 */
+    text-align: center;
+    z-index: 3;
+    display: none;
+}
+
+/* ===== 底部對話框 ===== */
+#dialogBox {
+    position: absolute;
+    bottom: 4%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 92%;
+    background: rgba(0,0,0,0.7);
+    color: white;
+    padding: 20px 28px;
+    border-radius: 12px;
+    z-index: 4;
+    display: none;
+}
+
+/* 名字 */
+#nameTag {
+    font-size: 0.9rem;
+    opacity: 0.85;
+    margin-bottom: 8px;  /* 名字與文字間距 */
+}
+
+/* 對話文字 */
+#dialogText {
+    font-size: 1rem;
+    line-height: 1.8;
+}
+
+/* 選單 */
+#menu {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+}
