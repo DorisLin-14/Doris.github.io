@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>我的貓咪個人空間</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- --- 頁面標題區 --- -->
+    <header style="text-align: center; margin-top: 50px;">
+        <h1>歡迎來到我的空間</h1>
+        <p>在這裡，貓咪是最高準則</p>
+    </header>
+
+    <!-- --- 主要互動區 --- -->
+    <main style="display: flex; flex-direction: column; align-items: center; gap: 20px; margin-top: 100px;">
+        
+        <!-- 登入與註冊區塊 -->
+        <section id="auth-section">
+            <button class="cat-button">登入</button>
+            <button class="cat-button">註冊</button>
+        </section>
+
+        <hr style="width: 200px; border: 0.5px solid #eee;">
+
+        <!-- 訪客快速入口 -->
+        <section id="guest-section">
+            <button class="cat-button" onclick="location.href='gallery.html'">訪客瀏覽</button>
+        </section>
+
+    </main>
+
+    <!-- 內頁主容器 -->
+    <div class="inner-page-container">
+    
+    <!-- 第一區塊：左圖右文 (介紹自己) -->
+    <section class="card-section section-1">
+        <div class="card-wrapper left-slide">
+            <img src="sticker_2.png" alt="小照片" class="intro-card">
+        </div>
+        <div class="content-box right-content">
+            <h2>關於我</h2>
+            <p>嘗試著利用AI來達到效率化的懶人，AI在今日是頗受爭議的工具，但我認為與其反抗，不如善用無法阻擋的趨勢讓生活過得輕鬆一些，畢竟人生苦短。</p>
+        </div>
+    </section>
+
+    <!-- 第二區塊：左文右圖 (介紹作品) -->
+    <section class="card-section section-2">
+        <div class="content-box left-content">
+            <h2>我的作品</h2>
+            <p>利用AI匯入我自己的插畫再變化而生成的貓貓LINE貼圖：呆橘貓</p>
+        </div>
+        <div class="card-wrapper right-slide">
+            <img src="sticker_7.png" alt="作品集" class="intro-card">
+        </div>
+    </section>
+</div>
+
+</body>
+</html>
