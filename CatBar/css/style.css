@@ -1,0 +1,87 @@
+/* style.css */
+
+:root {
+    --cat-primary: #f59e0b; /* 溫暖的橘貓色 */
+    --cat-bg: #fffbe0;      /* 柔和的奶油色背景 */
+    --text-dark: #444;
+}
+
+/* 全站字體與背景 */
+body.cat-theme {
+    background-color: var(--cat-bg);
+    font-family: 'Noto Sans TC', sans-serif;
+    color: var(--text-dark);
+    /* 隱藏原生游標 */
+    cursor: none; 
+}
+
+/* --- 自定義貓爪游標 (層次 C) --- */
+.custom-cursor {
+    width: 32px;
+    height: 32px;
+    background-image: url('path/to/your/cat-paw.png'); /* 替換為你的貓爪圖片 */
+    background-size: cover;
+    position: fixed;
+    pointer-events: none; /* 讓游標不穿透點擊 */
+    z-index: 9999;
+    transform: translate(-50%, -50%); /* 居中游標 */
+    transition: transform 0.1s ease;
+}
+
+/* --- 貓咪形狀按鈕 (層次 B) --- */
+/* 方法一：使用 CSS Mask (適合純色按鈕) */
+.cat-head-btn {
+    background-color: var(--cat-primary);
+    color: white;
+    border: none;
+    padding: 1.5rem 3rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    cursor: none; /* 保持自定義游標 */
+    
+    /* 這是關鍵：使用貓頭去背圖作為遮罩 */
+    -webkit-mask-image: url('path/to/your/cat-head-silhouette.png');
+    mask-image: url('path/to/your/cat-head-silhouette.png');
+    
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-position: center;
+
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* 按鈕懸停互動 (層次 C) */
+.cat-head-btn:hover {
+    transform: scale(1.05) rotate(-2deg); /* 微微放大並旋轉 */
+    background-color: #d97706; /* 加深顏色 */
+}
+
+/* 方法二：簡單的貓耳按鈕 (不使用圖片) */
+.btn-primary.cat-shape {
+    background-color: var(--cat-primary);
+    position: relative;
+    overflow: visible; /* 讓貓耳伸出去 */
+}
+
+.btn-primary.cat-shape::before,
+.btn-primary.cat-shape::after {
+    content: '';
+    position: absolute;
+    top: -10px;
+    width: 0;
+    height: 0;
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 15px solid var(--cat-primary); /* 貓耳顏色 */
+    transition: 0.3s;
+}
+
+.btn-primary.cat-shape::before { left: 15px; transform: rotate(-15deg); }
+.btn-primary.cat-shape::after { right: 15px; transform: rotate(15deg); }
+
+/* 懸停時貓耳動一下 */
+.btn-primary.cat-shape:hover::before { transform: rotate(-25deg) translateY(-2px); }
+.btn-primary.cat-shape:hover::after { transform: rotate(25deg) translateY(-2px); }
