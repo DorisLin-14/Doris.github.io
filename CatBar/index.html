@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>貓吧</title>
+    <style>
+        /* =========================================
+           1. 全域樣式與自定義游標
+           ========================================= */
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: "Microsoft JhengHei", sans-serif;
+            scroll-behavior: smooth; /* 讓捲動更平滑 */
+            /* 替換 'cursor.png' 為你的貓咪或個人圖片路徑 */
+            cursor: url('images/cat-paw.png'), auto;
+            background-color: #1a1a1a;
+            overflow-x: hidden;
+        }
+
+        /* =========================================
+           2. 貓咪 UI 按鈕樣式
+           ========================================= */
+        .cat-button {
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            border: none;
+            cursor: url('images/sticker_8.png'), pointer;
+            /* 替換為你的貓咪背景圖 */
+            background: url('images/sticker_2.png') center/cover no-repeat; 
+            background-color: #ff9d00; /* 圖片載入前的備用色 */
+            color: white;
+            border-radius: 50px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        }
+
+        .cat-button:hover {
+            transform: scale(1.1) rotate(3deg);
+            filter: brightness(1.1);
+        }
+
+        /* =========================================
+           3. 第一部分：首頁 (Hero Section)
+           ========================================= */
+        .hero-section {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            background: linear-gradient(135deg, #2c3e50, #000);
+            position: relative;
+            z-index: 10;
+        }
+
+        .auth-group {
+            margin-top: 30px;
+            display: flex;
+            gap: 20px;
+        }
+
+        /* =========================================
+           4. 內頁特效：卡牌與抽牌感
+           ========================================= */
+        .page-wrapper {
+            /* 頂部淡出感：當下方內容往上抽時，會慢慢消失 */
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%);
+            mask-image: linear-gradient(to bottom, transparent 0%, black 15%);
+        }
+
+        .card-section {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 10%;
+            position: sticky; /* 抽牌感核心：固定在頂部 */
+            top: 0;
+            background: white;
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        /* 文字內容區 */
+        .content-box {
+            flex: 1;
+            padding: 40px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s ease 0.5s;
+        }
+
+        /* 卡牌圖片容器 */
+        .card-wrapper {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+            opacity: 0;
+        }
+
+        .intro-card {
+            width: 80%;
+            max-width: 400px;
+            border-radius: 20px;
+            box-shadow: 0 15px 45px rgba(0,0,0,0.2);
+            border: 8px solid white; /* 拍立得風格 */
+        }
+
+        /* 左側伸出初始狀態 */
+        .slide-left { transform: translateX(-150%) rotate(-15deg); }
+        /* 右側伸出初始狀態 */
+        .slide-right { transform: translateX(150%) rotate(15deg); }
+
+        /* 動態啟動樣式 (由 JS 控制) */
+        .active .content-box { opacity: 1; transform: translateY(0); }
+        .active .card-wrapper { opacity: 1; transform: translateX(0) rotate(0deg); }
+
+    </style>
+</head>
+<body>
+
+    <!-- 首頁區塊 -->
+    <section class="hero-section">
+        <h1>Welcome to My Space</h1>
+        <p>在這裡，每一行程式碼都有貓咪的腳印</p>
+        <div class="auth-group">
+            <button class="cat-button">登入</button>
+            <button class="cat-button">註冊</button>
+        </div>
+        <div style="margin-top: 20px;">
+            <button class="cat-button" onclick="scrollToInner()">訪客瀏覽</button>
+        </div>
+    </section>
+
+    <!-- 內頁特效區塊 -->
+    <div class="page-wrapper" id="inner-content">
+        
+        <!-- 第一區塊：介紹自己 (左圖右文) -->
+        <section class="card-section" id="section-me">
+            <div class="card-wrapper slide-left">
+                <img src="assets/my-photo.jpg" alt="關於我" class="intro-card">
+            </div>
+            <div class="content-box">
+                <h2 style="font-size: 2.5rem; color: #333;">關於我 / About Me</h2>
+                <hr style="width: 50px; margin-left: 0; border: 2px solid #ff9d00;">
+                <p style="line-height: 1.8; color: #666;">
+                    你好！我是 [你的名字]。<br>
+                    熱衷於網頁開發與 UI/UX 設計，目前致力於將 AI 流程整合進日常工作。<br>
+                    對我來說，貓咪與程式碼是生活中最重要的兩件事。
+                </p>
+            </div>
+        </section>
+
+        <!-- 第二區塊：作品展示 (左文右圖) -->
+        <section class="card-section" id="section-work">
+            <div class="content-box" style="text-align: right;">
+                <h2 style="font-size: 2.5rem; color: #333;">精選作品 / Portfolio</h2>
+                <hr style="width: 50px; margin-right: 0; border: 2px solid #ff9d00;">
+                <p style="line-height: 1.8; color: #666;">
+                    這裡展示了我近期的網頁專案與平面設計。<br>
+                    點擊按鈕探索更多細節。
+                </p>
+                <button class="cat-button" style="margin-top: 20px;">查看更多</button>
+            </div>
+            <div class="card-wrapper slide-right">
+                <img src="assets/work-sample.jpg" alt="我的作品" class="intro-card">
+            </div>
+        </section>
+
+    </div>
+
+    <!-- =========================================
+       5. JavaScript 動態邏輯
+       ========================================= -->
+    <script>
+        // 1. 訪客瀏覽按鈕跳轉
+        function scrollToInner() {
+            document.getElementById('inner-content').scrollIntoView();
+        }
+
+        // 2. 監測捲動觸發動畫 (Intersection Observer)
+        const observerOptions = {
+            threshold: 0.4 // 區塊出現 40% 時觸發
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                } else {
+                    // 如果希望往回捲時重新播放動畫，取消下面註解
+                    // entry.target.classList.remove('active');
+                }
+            });
+        }, observerOptions);
+
+        // 綁定所有需要動畫的 Section
+        document.querySelectorAll('.card-section').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
