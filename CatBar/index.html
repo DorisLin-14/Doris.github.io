@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的貓吧</title>
+    <style>
+        /* =========================================
+           1. 全域樣式與自定義游標
+           ========================================= */
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: "Microsoft JhengHei", sans-serif;
+            scroll-behavior: smooth; /* 讓捲動更平滑 */
+            /* 替換 'cursor.png' 為你的貓咪或個人圖片路徑 */
+            cursor: url('images/cat-paw.png'), auto;
+            background-color: #1a1a1a;
+            overflow-x: hidden;
+        }
+
+        /* 頂部固定按鈕：回到主頁 */
+        .nav-home {
+            position: fixed;
+            top: 20px; left: 20px;
+            z-index: 999;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            border: 1px solid white;
+            color: white;
+            border-radius: 30px;
+            text-decoration: none;
+            display: none; /* 預設隱藏，進入內頁才顯示 */
+            cursor: pointer;
+        }
+
+        /* =========================================
+           2. 貓咪 UI 按鈕樣式
+           ========================================= */
+        .cat-button {
+            padding: 12px 30px;
+            font-size: 1.1rem;
+            border: none;
+            cursor: url('images/Button.png'), pointer;
+            /* 替換為你的貓咪背景圖 */
+            background: url('images/Button.png') center/cover no-repeat; 
+            background-color: #ff9d00; /* 圖片載入前的備用色 */
+            color: white;
+            border-radius: 50px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        }
+
+        .cat-button:hover {
+            transform: scale(1.1) rotate(3deg);
+            filter: brightness(1.1);
+        }
+
+        /* =========================================
+           3. 第一部分：首頁 (Hero Section)
+           ========================================= */
+        .hero-section {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            background: linear-gradient(135deg, #2c3e50, #000);
+            position: relative;
+            z-index: 10;
+        }
+
+        .auth-group {
+            margin-top: 30px;
+            display: flex;
+            gap: 20px;
+        }
+
+        /* =========================================
+           4. 內頁特效：卡牌與抽牌感
+           ========================================= */
+        .page-wrapper {
+            /* 頂部淡出感：當下方內容往上抽時，會慢慢消失 */
+            -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 15%);
+            mask-image: linear-gradient(to bottom, transparent 0%, black 15%);
+        }
+
+        .card-section {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0 10%;
+            position: sticky; /* 抽牌感核心：固定在頂部 */
+            top: 0;
+            background: white;
+            box-shadow: 0 -10px 30px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        /* 文字內容區 */
+        .content-box {
+            flex: 1;
+            padding: 40px;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1s ease 0.5s;
+        }
+
+        /* 卡牌圖片容器 */
+        .card-wrapper {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: all 0.8s cubic-bezier(0.25, 1, 0.5, 1);
+            opacity: 0;
+        }
+
+        .intro-card {
+            width: 80%;
+            max-width: 400px;
+            border-radius: 20px;
+            box-shadow: 0 15px 45px rgba(0,0,0,0.2);
+            border: 8px solid white; /* 拍立得風格 */
+        }
+
+        /* 左側伸出初始狀態 */
+        .slide-left { transform: translateX(-150%) rotate(-15deg); }
+        /* 右側伸出初始狀態 */
+        .slide-right { transform: translateX(150%) rotate(15deg); }
+
+        /* 動態啟動樣式 (由 JS 控制) */
+        .active .content-box { opacity: 1; transform: translateY(0); }
+        .active .card-wrapper { opacity: 1; transform: translateX(0) rotate(0deg); }
+
+    </style>
+</head>
+<body>
+
+    <!-- 首頁區塊 -->
+    <section class="hero-section">
+        <h1>Welcome to My Space</h1>
+        <p>在這裡，只有貓貓和貓貓</p>
+        <div style="margin-top: 20px;">
+            <button class="cat-button" onclick="scrollToInner()">訪客瀏覽</button>
+        </div>
+    </section>
+
+    <!-- 內頁特效區塊 -->
+    <div class="page-wrapper" id="inner-content">
+        
+        <!-- 第一區塊：介紹自己 (左圖右文) -->
+        <section class="card-section" id="section-me">
+            <div class="card-wrapper slide-left">
+                <img src="images/sticker_17.png" alt="關於我" class="intro-card">
+            </div>
+            <div class="content-box">
+                <h2 style="font-size: 2.5rem; color: #333;">關於我 / About Me</h2>
+                <hr style="width: 50px; margin-left: 0; border: 2px solid #ff9d00;">
+                <p style="line-height: 1.8; color: #666;">
+                    你好！我是MuMu。<br>
+                    致力於將 AI 流程整合進日常工作。<br>
+                    對我來說，貓咪與AI共同工作是生活中最重要的兩件事。
+                </p>
+            </div>
+        </section>
+
+        <!-- 第二區塊：作品展示 (左文右圖) -->
+        <section class="card-section" id="section-work">
+            <div class="content-box" style="text-align: right;">
+                <h2 style="font-size: 2.5rem; color: #333;">精選作品 / Portfolio</h2>
+                <hr style="width: 50px; margin-right: 0; border: 2px solid #ff9d00;">
+                <p style="line-height: 1.8; color: #666;">
+                    我嘗試將自己的繪圖餵給AI並生成 LINE貼圖<br>
+                    點擊按鈕探索「在下奴才」
+                </p>
+                <button class="cat-button" style="margin-top: 20px;">查看更多</button>
+            </div>
+            <div class="card-wrapper slide-right">
+                <img src="images/sticker_19.png" alt="我的作品" class="intro-card">
+            </div>
+        </section>
+
+    </div>
+
+        /* =========================================
+           5. 轉場動畫核心 (Transition)
+           ========================================= */
+        .page-container {
+            width: 100%;
+            transition: transform 0.8s ease, opacity 0.6s ease;
+            position: absolute;
+            top: 0; left: 0;
+        }
+
+        /* 頁面往左淡出 */
+        .exit-left {
+            transform: translateX(-100%) scale(0.9);
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        /* 新頁面從右邊翻進來 */
+        .enter-right {
+            transform: rotateY(-90deg); /* 初始垂直於螢幕 */
+            opacity: 0;
+            display: block !important;
+        }
+
+        .flip-in {
+            animation: cardFlipIn 1s forwards cubic-bezier(0.23, 1, 0.32, 1);
+        }
+
+        @keyframes cardFlipIn {
+            from { transform: translateX(100%) rotateY(-90deg); opacity: 0; }
+            to { transform: translateX(0) rotateY(0deg); opacity: 1; }
+        }
+
+        /* =========================================
+           6. 作品詳情頁樣式 (新頁面)
+           ========================================= */
+        #portfolio-page {
+            display: none;
+            background: #222;
+            min-height: 100vh;
+            padding: 100px 50px;
+            box-sizing: border-box;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 40px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* 圖片連結外框 */
+        .work-item {
+            border: 2px solid #444;
+            padding: 15px;
+            border-radius: 15px;
+            background: #2a2a2a;
+            transition: all 0.3s ease;
+            text-align: center;
+            text-decoration: none;
+            color: white;
+        }
+
+        .work-item:hover {
+            border-color: #ff9d00;
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+        }
+
+        .work-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+    <!-- 固定導覽：回到主頁 -->
+    <div class="nav-home" id="btn-home" onclick="goHome()">🏠 回到主頁</div>
+
+    <!-- 作品詳情頁容器 (新頁面) -->
+    <div id="portfolio-page" class="page-container enter-right">
+        <h2 style="text-align:center; margin-bottom:50px;">作品集展示</h2>
+        
+        <div class="grid-container">
+            <!-- 圖片超連結形式 -->
+            <a href="https://link-to-your-work1.com" class="work-item" target="_blank">
+                <img src="assets/work1.jpg" alt="作品1">
+                <h3>作品名稱 A</h3>
+                <p>簡單的作品描述文字</p>
+            </a>
+
+            <a href="https://link-to-your-work2.com" class="work-item" target="_blank">
+                <img src="assets/work2.jpg" alt="作品2">
+                <h3>作品名稱 B</h3>
+                <p>簡單的作品描述文字</p>
+            </a>
+            
+            <!-- 更多圖片連結... -->
+        </div>
+    </div>
+
+    <button id="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">↑</button>
+
+    <script>
+        // --- 1. 分頁切換邏輯 ---
+        function showPortfolio() {
+            const main = document.getElementById('main-page');
+            const port = document.getElementById('portfolio-page');
+            const homeBtn = document.getElementById('btn-home');
+
+            main.classList.add('exit-left'); // 主頁向左淡出
+            port.classList.add('flip-in'); // 作品頁翻轉進來
+            homeBtn.style.display = 'block'; // 顯示回到主頁按鈕
+            window.scrollTo(0, 0);
+        }
+
+        function goHome() {
+            const main = document.getElementById('main-page');
+            const port = document.getElementById('portfolio-page');
+            const homeBtn = document.getElementById('btn-home');
+
+            main.classList.remove('exit-left');
+            port.classList.remove('flip-in');
+            homeBtn.style.display = 'none';
+            window.scrollTo(0, 0);
+        }
+
+        // --- 2. 回到頂部按鈕邏輯 ---
+        window.onscroll = function() {
+            const btn = document.getElementById('back-to-top');
+            if (document.body.scrollTop > 500 || document.documentElement.scrollTop > 500) {
+                btn.style.display = "block";
+            } else {
+                btn.style.display = "none";
+            }
+        }
+    </script>
+
+    <!-- =========================================
+            JavaScript 動態邏輯
+       ========================================= -->
+    <script>
+        // 1. 訪客瀏覽按鈕跳轉
+        function scrollToInner() {
+            document.getElementById('inner-content').scrollIntoView();
+        }
+
+        // 2. 監測捲動觸發動畫 (Intersection Observer)
+        const observerOptions = {
+            threshold: 0.4 // 區塊出現 40% 時觸發
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                } else {
+                    // 如果希望往回捲時重新播放動畫，取消下面註解
+                    // entry.target.classList.remove('active');
+                }
+            });
+        }, observerOptions);
+
+        // 綁定所有需要動畫的 Section
+        document.querySelectorAll('.card-section').forEach(el => {
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
