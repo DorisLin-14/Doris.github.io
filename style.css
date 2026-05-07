@@ -1,0 +1,544 @@
+/* ==========================================
+   1. 核心變數與全局設定 (Variables & Base)
+   ========================================== */
+:root {
+    --primary-gold: #ff9d00;
+    --bg-dark: #1a1a1a;
+    --bg-light: #ffffff;
+    --card-shadow: 0 15px 35px rgba(0,0,0,0.2);
+    
+    /* 游標資源定義 */
+    --cursor-normal: url('./assets/cat-paw-64.png') 16 16, auto;
+    --cursor-pressed: url('./assets/cat-pressed-64.png') 16 16, auto;
+    --cursor-link: url('./assets/cat-link-64.png') 16 16, pointer;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-snap-type: y mandatory; /* 開啟區塊吸附功能 */
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: "PingFang TC", "Microsoft JhengHei", sans-serif;
+    background-color: var(--bg-dark);
+    color: white;
+    overflow-x: hidden;
+}
+
+/* 鎖定頁面用 (例如彈窗開啟時) */
+body.locked {
+    overflow: hidden;
+    height: 100vh;
+}
+
+
+/* ==========================================
+   2. 貓咪游標系統 (Custom Cursors)
+   ========================================== */
+/* 全域常態游標 */
+html, body {
+    cursor: var(--cursor-normal) !important;
+}
+
+/* 點擊中狀態 */
+html:active, body:active {
+    cursor: var(--cursor-pressed) !important;
+}
+
+/* 互動元素游標 (連結、按鈕、可點擊物件) */
+a, 
+button, 
+.cat-btn, 
+.work-link, 
+.close-resume, 
+.award-img,
+.tag-item,
+.expand-box,
+input[type="button"],
+input[type="submit"] {
+    cursor: var(--cursor-link) !important;
+}
+
+/* 互動元素點擊中 */
+a:active, button:active, .cat-btn:active {
+    cursor: var(--cursor-pressed) !important;
+}
+
+
+/* ==========================================
+   3. 導覽與通用按鈕 (UI Components)
+   ========================================== */
+.nav-home-fixed {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 3000;
+    padding: 10px 20px;
+    background: var(--primary-gold);
+    color: white;
+    border-radius: 25px;
+    border: none;
+    display: none;
+}
+
+#back-to-top {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    z-index: 1000;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: var(--primary-gold);
+    color: white;
+    border: none;
+    display: none;
+}
+
+.cat-btn {
+    padding: 12px 35px;
+    background: var(--primary-gold);
+    border: none;
+    border-radius: 50px;
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+    display: inline-block;
+    transition: transform 0.2s ease;
+}
+
+.cat-btn:hover {
+    transform: scale(1.05);
+}
+
+.text-link {
+    color: var(--primary-gold);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+
+/* ==========================================
+   4. 第一階段：主畫面與滾動區塊 (Stage 1 Layout)
+   ========================================== */
+
+/* 使用暖系色調：淡橘、粉黃、柔粉 */
+body {
+    background: linear-gradient(45deg, #fff5e6, #ffecd2, #fcb69f, #ffecd2);
+    background-size: 400% 400%;
+    animation: gradientFlow 15s ease infinite;
+    overflow-x: hidden;
+}
+
+@keyframes gradientFlow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+.main-wrapper {
+    transition: transform 0.8s ease, opacity 0.6s ease;
+    overflow: visible;
+}
+
+/* 游離圖片效果 */
+.floating-container {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none; /* 確保不干擾滑鼠點擊 */
+    z-index: -1; /* 放在所有內容後方 */
+}
+
+.float-item {
+    position: absolute;
+    opacity: 0.3; /* 增加透明度，若隱若現 */
+    filter: blur(1px); /* 輕微模糊增加深度感 */
+    animation: floatAround 20s linear infinite;
+}
+
+/* 定義隨機游離的軌跡 */
+@keyframes floatAround {
+    0% { transform: translate(0, 0) rotate(0deg); }
+    33% { transform: translate(100px, 150px) rotate(120deg); }
+    66% { transform: translate(-50px, 300px) rotate(240deg); }
+    100% { transform: translate(0, 0) rotate(360deg); }
+}
+
+/* 不同圖片的初始位置與速度差異 */
+.item-1 { top: 10%; left: 10%; animation-duration: 25s; width: 80px; }
+.item-2 { top: 60%; left: 80%; animation-duration: 30s; width: 120px; animation-delay: -5s; }
+.item-3 { top: 40%; left: 40%; animation-duration: 22s; width: 60px; animation-delay: -2s; }
+
+/* 離開主頁面的動畫類名 */
+.exit-left {
+    transform: translateX(-100%);
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* 封面區塊 */
+.hero-section {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: radial-gradient(circle, #2c3e50 0%, #000 100%);
+    position: relative;
+    z-index: 10;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    overflow: hidden;
+}
+
+/* 卡片式內容區塊 (關於、作品入口) */
+.card-section {
+    min-height: 100vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background-color: #f4f4f4;
+    color: #333;
+    opacity: 0;
+    padding: 100px 0;
+    box-shadow: inset 0 20px 40px rgba(0,0,0,0.1);
+    border-bottom: 8px solid var(--primary-gold);
+    box-sizing: border-box;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+    transition: opacity 1s ease;
+    overflow: hidden;
+}
+
+.card-section:nth-child(even) {
+    background-color: #ffffff;
+}
+
+.card-section.active {
+    opacity: 1;
+}
+
+/* 滑動進入動畫 */
+.card-img { width: 350px; transition: 1s cubic-bezier(0.22, 1, 0.36, 1); }
+.slide-left { transform: translateX(-150%) rotate(-10deg); }
+.slide-right { transform: translateX(150%) rotate(10deg); }
+.active .slide-left, .active .slide-right { transform: translateX(0) rotate(0deg); }
+
+
+/* ==========================================
+   5. 關於我：3D 卡牌與履歷 (Flip Card System)
+   ========================================== */
+.intro-container {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    width: 90%;
+    max-width: 1100px;
+    gap: 40px;
+}
+
+/* 3D 結構 */
+.flip-card {
+    background-color: transparent;
+    width: 350px;
+    height: 450px;
+    perspective: 1000px;
+}
+
+.flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-style: preserve-3d;
+}
+
+.flipped { transform: rotateY(180deg); }
+
+.flip-card-front, .flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    box-shadow: var(--card-shadow);
+}
+
+.flip-card-back {
+    background-color: white;
+    color: #333;
+    transform: rotateY(180deg);
+    border: 1px solid #eee;
+}
+
+/* 履歷內容控制 */
+.intro-text-box { flex: 1; min-height: auto; }
+.resume-content { display: none; }
+.resume-scroll { overflow-y: auto; overflow-x: visible; }
+
+.resume-active .resume-content {
+    display: block;
+    animation: fadeIn 0.5s forwards;
+}
+
+.resume-active #default-intro { display: none; }
+
+.resume-item {
+    margin-bottom: 25px;
+    padding-bottom: 5px;
+    overflow: visible !important;
+}
+
+.resume-tag {
+    display: inline-block;
+    margin-bottom: 12px;
+    color: var(--primary-gold);
+    font-size: 1rem;
+    border-left: 4px solid var(--primary-gold);
+    padding-left: 10px;
+    font-weight: bold;
+}
+
+.skill-list {
+    margin: 0; padding-left: 20px;
+    font-size: 0.95rem; line-height: 1.6;
+}
+
+/* 獲獎照片互動 */
+.award-img {
+    width: 180px;
+    border-radius: 8px;
+    margin: 15px 0 10px 0;
+    transition: transform 0.4s ease;
+    position: relative;
+    z-index: 1;
+    transform-origin: left center;
+}
+
+.award-img:hover { transform: scale(1.1); }
+
+.award-img.enlarged {
+    z-index: 9999 !important;
+    transform: scale(2.2) translateX(5%);
+    box-shadow: 0 10px 50px rgba(0,0,0,0.5);
+    border: 2px solid white;
+}
+
+/* 收起按鈕 */
+.close-resume {
+    text-align: center;
+    margin-top: 20px;
+    color: #999;
+    transition: 0.3s;
+}
+.close-resume:hover { color: var(--primary-gold); }
+.arrow-up { font-size: 24px; display: block; line-height: 1; }
+
+
+/* ==========================================
+   6. 第二 & 三階段：分頁系統 (Sub-pages)
+   ========================================== */
+.page-container {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    min-height: 100vh;
+    display: none;
+    background: #111;
+    padding: 80px 5% 40px;
+    box-sizing: border-box;
+    z-index: 2000;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* 進場動畫 */
+.flip-enter { display: block !important; animation: flipIn 0.8s forwards; }
+
+@keyframes flipIn {
+    from { transform: translateX(100%) rotateY(-90deg); opacity: 0; }
+    to { transform: translateX(0) rotateY(0deg); opacity: 1; }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideInFade {
+    from { opacity: 0; transform: translateX(20px); }
+    to { opacity: 1; transform: translateX(0); }
+}
+
+/* 作品與商品網格 */
+.work-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 0.4fr));
+    gap: 20px;
+    justify-content: center;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+/* 展開框組件 */
+.expand-box {
+    background: #222;
+    padding: 20px;
+    border-radius: 15px;
+    transition: 0.3s;
+    text-align: center;
+}
+
+.fixed-size-img {
+    width: 300px;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 10px;
+    display: block;
+    margin: 0 auto;
+}
+
+.label-content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 10px;
+}
+
+.expand-box.active .label-content {
+    max-height: 100px;
+}
+
+.tag-item {
+    background: var(--primary-gold);
+    color: white;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    text-decoration: none;
+}
+
+/* 詳情展示區、動態與燈箱 */
+.detail-display-box {
+    margin-top: 80px;
+    padding: 40px;
+    background: #2a2a2a;
+    border-radius: 20px;
+    text-align: center;
+    min-height: 200px;
+    border: 2px dashed var(--primary-gold);
+}
+
+.detail-flex-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    gap: 40px;
+    padding: 20px;
+}
+
+.detail-text { flex: 1; text-align: left; }
+.detail-image-box { flex: 0.8; text-align: center; perspective: 1000px; }
+
+#detail-img {
+    width: 100%;
+    max-width: 280px;
+    border-radius: 15px;
+    box-shadow: var(--card-shadow);
+    display: none;
+}
+
+/* 柔和淡入 */
+.anim-fade-in {
+    animation: simpleFade 0.6s ease forwards;
+}
+
+/* 3D 翻頁切換 */
+.anim-page-flip {
+    animation: pageFlip 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes simpleFade {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pageFlip {
+    0% { opacity: 0; transform: rotateY(-90deg) scale(0.8); }
+    100% { opacity: 1; transform: rotateY(0deg) scale(1); }
+}
+
+.lightbox {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.85);
+    display: none; 
+    justify-content: center;
+    align-items: center;
+    z-index: 10000;
+    cursor: zoom-out;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.lightbox img {
+    max-width: 85%;
+    max-height: 85%;
+    border-radius: 15px;
+    box-shadow: 0 0 30px rgba(0,0,0,0.5);
+    
+    /* 核心：初始狀態縮小且透明 */
+    transform: scale(0.7);
+    opacity: 0;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
+}
+
+.lightbox.show {
+    display: flex; /* 啟動彈性佈局確保置中 */
+    opacity: 1;
+}
+
+.lightbox.show img {
+    transform: scale(1);
+    opacity: 1;
+}
+
+
+/* ==========================================
+   7. 吉祥物牆 (Footer Mascot)
+   ========================================== */
+.cat-photo-wall img {
+    width: 80%;
+    max-width: 400px;
+    border-radius: 15px;
+    border: 3px solid #fff;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+/* 針對作品連結的微調 */
+.work-link {
+    background: #222;
+    border-radius: 15px;
+    overflow: hidden;
+    color: white;
+    text-decoration: none;
+    transition: 0.3s;
+}
+
+.work-link img { width: 100%; height: 180px; object-fit: cover; }
+.work-link h3 { font-size: 1.1rem; margin: 12px; }
