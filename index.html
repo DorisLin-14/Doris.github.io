@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>我的貓吧 | My Cat Bar</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="locked">
+
+    <!-- ---------------------------------------------------------
+         固定 UI 元件
+    ---------------------------------------------------------- -->
+    <button class="nav-home-fixed" id="homeBtn">🏠 回到主頁</button>
+    <button id="back-to-top" onclick="scrollToTop()">▲</button>
+
+    <!-- ---------------------------------------------------------
+         第一階段：主頁面系統
+    ---------------------------------------------------------- -->
+    <div id="main-content" class="main-wrapper">
+        
+        <!-- 1.封面主畫面 -->
+        <section class="hero-section">
+            <h1 style="font-size: 3.5rem;">My Cat Bar</h1>
+            <p style="opacity: 0.7;">化想像為現實的貓咪創意空間</p>
+            <button class="cat-btn" onclick="scrollToAbout()">開始瀏覽</button>
+        </section>
+
+        <!-- 2.關於我（含翻轉履歷功能） -->
+        <section class="card-section" id="intro">
+            <div class="intro-container" id="intro-container">
+                
+                <!-- 左側：3D 翻轉卡片 -->
+                <div class="flip-card">
+                    <div class="flip-card-inner" id="card-inner">
+                        <!-- 正面：個人照片 -->
+                        <div class="flip-card-front">
+                            <img src="./assets/sticker_19.png" alt="我" style="width:100%; height:100%; border-radius:15px; object-fit: cover;">
+                        </div>
+                        <!-- 背面：個人資訊 -->
+                        <div class="flip-card-back">
+                            <h2 style="color: #333; margin-bottom: 5px;">林詩芸</h2>
+                            <p style="color: #666; letter-spacing: 2px;">Lin, Shih-Yun</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 右側：內容區塊 -->
+                <div class="intro-text-box">
+                    <!-- 狀態 A：初始簡介 -->
+                    <div id="default-intro">
+                        <h2>關於我 🙋🏻‍</h2>
+                        <p>希望能運用AI、生活中熱愛的興趣、喜歡的事物來化想像為現實。</p>
+                        <button class="cat-btn" onclick="toggleResume(true)">展開詳細履歷</button>
+                    </div>
+
+                    <!-- 狀態 B：詳細履歷（預設隱藏） -->
+                    <div id="detailed-resume" class="resume-content">
+                        <div class="resume-scroll">
+                            <div class="resume-item">
+                                <span class="resume-tag">簡介</span>
+                                <p>在AI科技發達的時代，我想利用這些技術來有效學習製作遊戲、網頁或有互動性的作品。</p>
+                            </div>
+
+                            <div class="resume-item">
+                                <span class="resume-tag">學歷</span>
+                                <p>銘傳大學 數位媒體設計學系</p>
+                            </div>
+
+                            <div class="resume-item">
+                                <span class="resume-tag">技能</span>
+                                <ul class="skill-list">
+                                    <li>網頁架設 / AI輔助應用</li>
+                                    <li>平面排版 / 簡報設計</li>
+                                    <li>Unity 開發 / 遊戲製作</li>
+                                </ul>
+                            </div>
+
+                            <div class="resume-item">
+                                <span class="resume-tag">專案</span>
+                                <p>逛喫遊馬 3D 地圖網頁<br>
+                                <a href="https://my.spline.design/13main-fa30bfc259ec4d63d4cc8fd0c1acd120/" target="_blank" class="text-link">點此查看作品 🔗</a></p>
+                                <img src="./assets/TabeUma.jpg" alt="獲獎證明" class="award-img"> 
+                            </div>
+                        </div>
+                        
+                        <!-- 縮起按鈕 -->
+                        <div class="close-resume" onclick="toggleResume(false)">
+                            <span class="arrow-up">▲</span>
+                            <p style="font-size: 12px; margin: 0;">收起履歷</p>
+                        </div>
+                    </div>
+                </div> 
+            </div> 
+        </section>
+
+        <!-- 3. 商品入口 -->
+        <section class="card-section" id="products-trigger">
+            <div style="flex:1; padding-right: 50px; text-align: right;">
+                <h2>我的商品 🛍️</h2>
+                <p>收藏了我和AI產出的小物，點擊進入商店。</p>
+                <button class="cat-btn" onclick="openPortfolio()">進入商店</button>
+            </div>
+            <div class="card-img slide-right">
+                <img src="./assets/sticker_14.png" alt="商品" style="width:100%; border-radius:10px;">
+            </div>
+        </section>
+
+        <!-- 4. 作品入口 -->
+        <section class="card-section" id="works-trigger">
+            <div class="card-img slide-left">
+                <img src="./assets/sticker_7.png" alt="作品" style="width:100%; border-radius:10px;">
+            </div>
+            <div style="flex:1; padding-left: 50px;">
+                <h2>作品展示</h2>
+                <p>探索我和AI的工作成果。</p>
+                <button class="cat-btn" onclick="flipToWorksFromHome()">查看全集</button>
+            </div>
+        </section>
+    </div>
+
+    <!-- ---------------------------------------------------------
+         第二階段：商品詳情頁
+    ---------------------------------------------------------- -->
+    <div id="portfolio-page" class="page-container">
+        <h1 style="text-align: center;">項目清單</h1>
+        <div class="work-grid">
+            <div class="expand-box" onclick="toggleLabel(this)">
+                <img src="./assets/sticker_2.png" alt="LINE 貼圖" class="fixed-size-img">
+                <h3>LINE 貼圖-貓咪系列</h3>
+                <div class="label-content">
+                    <span class="tag-item" onclick="showProductDetail('呆橘貓', '又圓又Q的水彩風橘貓', 'https://line.me/S/sticker/33840747')">呆橘貓 🔗</span>
+                    <span class="tag-item" onclick="showProductDetail('聰明白貓', '獨立又認真的白毛貓', 'https://line.me/S/sticker/33840747')">聰明白貓 🔗</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="product-detail-area" class="detail-display-box">
+            <h2 id="detail-title">請選擇上方標籤</h2>
+            <p id="detail-desc">點擊標籤查看詳細資訊...</p>
+            <a href="#" id="detail-link" target="_blank" class="cat-btn" style="display:none;">前往購買</a>
+        </div>
+
+        <div style="text-align: right; max-width: 1200px; margin: 50px auto;">
+            <button class="cat-btn" onclick="flipToWorks()">前往作品展示 ➔</button>
+        </div>
+    </div>
+
+    <!-- ---------------------------------------------------------
+         第三階段：作品展示頁
+    ---------------------------------------------------------- -->
+    <div id="works-page" class="page-container">
+        <h1 style="text-align: center;">作品展示 🎨</h1>
+        <div class="work-grid">
+            <div class="expand-box" onclick="toggleLabel(this)">
+                <img src="assets/sticker_7.png" alt="網頁遊戲" class="fixed-size-img">
+                <h3>開發專案</h3>
+                <div class="label-content">
+                    <a href="./MyWebG - RE/" target="_blank" class="tag-item">網頁遊戲作品</a>
+                </div>
+            </div>
+        
+            <div class="expand-box" onclick="toggleLabel(this)">
+                <img src="./assets/sticker_18.png" alt="繪圖" class="fixed-size-img">
+                <h3>視覺藝術</h3>
+                <div class="label-content">
+                    <span class="tag-item" onclick="openLightbox('./assets/sticker_18.png')">小動物插圖 🔍</span>
+                </div>
+            </div>
+        </div>
+
+        <div style="text-align: left; max-width: 1200px; margin: 50px auto;">
+            <button class="cat-btn" onclick="flipBackToPortfolio()">⬅ 返回商品頁</button>
+        </div>
+
+        <div style="text-align: center; margin-top: 50px;">
+            <div class="cat-photo-wall">
+                <img src="./assets/Cookie.jpg" alt="吉祥物">
+                <p style="color: white;">最樂天的陽光貓貓</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 燈箱彈窗結構 -->
+    <div id="lightbox-overlay" class="lightbox" onclick="closeLightbox()">
+        <img id="lightbox-img" src="" alt="放大圖">
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
